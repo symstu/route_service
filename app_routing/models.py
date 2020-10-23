@@ -15,4 +15,3 @@ class UserRoute(Base):
     id = sa.Column(sa.Integer, primary_key=True)
     user_id = sa.Column(sa.Integer, nullable=False)
     route_id = sa.Column(sa.Integer, nullabel=False)
-

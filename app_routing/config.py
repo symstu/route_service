@@ -1,13 +1,15 @@
 import os
 import asyncpg
 
+from starlette.templating import Jinja2Templates
+
 
 class TestConfig:
     db_host: str = os.environ.get('db_host', 'localhost')
     db_port: int = os.environ.get('db_port', 5432)
     db_user: str = os.environ.get('db_user', 'postgres')
     db_password: str = os.environ.get('db_password', 'postgres')
-    db_name: str = os.environ.get('db_name', 'sso')
+    db_name: str = os.environ.get('db_name', 'routes_sso')
 
     __db_conn: asyncpg.Connection = None
 
@@ -31,3 +33,4 @@ class TestConfig:
 
 
 conf = TestConfig()
+templates = Jinja2Templates(directory='templates')
