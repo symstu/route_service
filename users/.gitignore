@@ -6,3 +6,6 @@
 /Pipfile
 /Pipfile.lock
 /pyvenv.cfg
+/bin/
+/lib/python3.8/site-packages/
+/lib64/

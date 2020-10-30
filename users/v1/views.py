@@ -35,7 +35,7 @@ class AuthenticateView(HTTPEndpoint):
 
 
 class LoginView(HTTPEndpoint):
-    async def post(self, request):
+    async def post(self, request: Request):
         """
         responses:
             200:
@@ -58,7 +58,7 @@ class LoginView(HTTPEndpoint):
 
 
 class RegisterView(HTTPEndpoint):
-    async def post(self, request):
+    async def post(self, request: Request):
         """
         responses:
             200:
@@ -88,7 +88,7 @@ class LogoutView(HTTPEndpoint):
         400:
             description: User with such name already exists
     """
-    async def delete(cls, request):
+    async def delete(cls, request: Request):
         user_id = request.query_params.get('user_id')
 
         if not user_id:

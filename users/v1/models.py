@@ -13,7 +13,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from config import conf
 from v1 import exc
 
-
 Base = declarative_base()
 
 

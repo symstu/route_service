@@ -7,7 +7,7 @@ class TestConfig:
     db_port: int = os.environ.get('db_port', 5432)
     db_user: str = os.environ.get('db_user', 'postgres')
     db_password: str = os.environ.get('db_password', 'postgres')
-    db_name: str = os.environ.get('db_name', 'sso')
+    db_name: str = os.environ.get('db_name', 'routes')
 
     __db_conn: asyncpg.Connection = None
 
@@ -16,7 +16,6 @@ class TestConfig:
         return f'postgresql://{self.db_user}:{self.db_password}@' \
                f'{self.db_host}:{self.db_port}/{self.db_name}'
 
-    @property
     async def db_conn(self) -> asyncpg.Connection:
         if self.__db_conn is None:
             self.__db_conn = await asyncpg.connect(
