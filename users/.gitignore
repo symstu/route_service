@@ -2,3 +2,7 @@
 ./include
 ./lib
 ./pyvenv.cfg
+/.idea/
+/Pipfile
+/Pipfile.lock
+/pyvenv.cfg

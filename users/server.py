@@ -1,7 +1,6 @@
 from starlette.applications import Starlette
-from starlette.responses import JSONResponse
-from starlette.routing import Route
 
+from v1.views import routes
 
 
 app = Starlette(routes=routes)

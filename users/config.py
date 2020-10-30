@@ -16,7 +16,6 @@ class TestConfig:
         return f'postgresql://{self.db_user}:{self.db_password}@' \
                f'{self.db_host}:{self.db_port}/{self.db_name}'
 
-    @property
     async def db_conn(self) -> asyncpg.Connection:
         if self.__db_conn is None:
             self.__db_conn = await asyncpg.connect(
