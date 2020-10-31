@@ -25,8 +25,9 @@ class User(Base):
     sessions = relationship('Session', cascade='all, delete')
     created_at = sa.Column(sa.DateTime, server_default='now()')
 
-    __table_args__ = (sa.Index('idx_users_username_password',
-                               'username', 'password'),)
+    __table_args__ = (
+        sa.Index('idx_users_username_password', ['username', 'password']),
+    )
 
     @staticmethod
     def gen_password(plain_password: str) -> str:
@@ -107,7 +108,9 @@ class Session(Base):
     user_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'), unique=True)
     created_at = sa.Column(sa.DateTime, primary_key=True, server_default='now()')
 
-    __table_args__ = (sa.Index('idx_sessions_token', 'token'),)
+    __table_args__ = (
+        sa.Index('idx_sessions_token', 'token'),
+    )
 
     @classmethod
     async def create(cls, user_id: int):

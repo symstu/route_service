@@ -1,8 +1,7 @@
 import asyncio
 import pytest
 
-
-from seeds import generate_dots
+from seeds import generate_points_and_routes
 
 
 @pytest.fixture(scope='session')
@@ -11,10 +10,5 @@ def event_loop():
 
 
 @pytest.fixture(scope='session', autouse=True)
-async def create_dots():
-    await generate_dots()
-
-
-@pytest.fixture(scope='session', autouse=True)
-async def create_routes():
-    await generate_dots()
+async def load_seeds():
+    await generate_points_and_routes()

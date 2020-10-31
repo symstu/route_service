@@ -1,6 +1,5 @@
 import pytest
 
-
 from starlette.testclient import TestClient
 from server import app
 
