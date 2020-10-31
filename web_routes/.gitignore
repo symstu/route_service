@@ -1,4 +1,7 @@
 /pyvenv.cfg
-/lib/
-/include/
+./lib
+./include
+./bin
+/.idea/
 /bin/
+/lib/python3.8/site-packages/
