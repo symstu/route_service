@@ -3,6 +3,8 @@ import asyncpg
 
 
 class TestConfig:
+    server_port: int = 9002
+
     db_host: str = os.environ.get('db_host', 'localhost')
     db_port: int = os.environ.get('db_port', 5432)
     db_user: str = os.environ.get('db_user', 'postgres')

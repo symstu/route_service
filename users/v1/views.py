@@ -48,9 +48,8 @@ class LoginView(HTTPEndpoint):
         data = inputs.LoginInput(**await request.json())
 
         try:
-            user, session = await models.User.login(
-                data.username, data.password)
-            return JSONResponse(user, headers={'token': session})
+            user = await models.User.login(data.username, data.password)
+            return JSONResponse(user)
 
         except exc.UserNotFound:
             return JSONResponse(status_code=404,
@@ -71,9 +70,8 @@ class RegisterView(HTTPEndpoint):
         data = inputs.LoginInput(**await request.json())
 
         try:
-            user, session = await models.User.register(
-                data.username, data.password)
-            return JSONResponse(user, headers={'token': session})
+            user = await models.User.register(data.username, data.password)
+            return JSONResponse(user)
 
         except exc.UserAlreadyExists:
             return JSONResponse(status_code=400,

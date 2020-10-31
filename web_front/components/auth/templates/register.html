@@ -1,0 +1,31 @@
+{% extends 'components/auth/templates/base.html' %}
+
+{% block overrided_styles %}
+<style>
+    .inputs {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 200px 200px;
+        grid-template-rows: 20px 20px 20px 40px;
+    }
+</style>
+{% endblock %}
+
+{% block form %}
+    <form method="POST" action="/register/">
+        <div class="inputs">
+            <label for="loginInput">Email:</label>
+            <input id="loginInput" type="email" name="username">
+
+            <label for="passwordInput">Password:</label>
+            <input id="passwordInput" type="password" name="password">
+
+
+            <label for="passwordInputAgain">Password Again:</label>
+            <input id="passwordInputAgain" type="password" name="password_confirmation">
+
+            <input class="login-button m-top" type="submit" value="Register">
+            <a class="m-top" href="/login/">Login</a>
+        </div>
+    </form>
+{% endblock %}

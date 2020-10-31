@@ -2,11 +2,11 @@ import uvicorn
 
 from starlette.applications import Starlette
 
-from v1.views import routes
+from components.auth import views
 from config import conf
 
 
-app = Starlette(routes=routes)
+app = Starlette(routes=views.routes)
 
 
 if __name__ == '__main__':

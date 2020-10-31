@@ -1,0 +1,16 @@
+{% extends 'components/auth/templates/base.html' %}
+
+{% block form %}
+    <form method="POST" action="/login/">
+        <div class="inputs">
+            <label for="loginInput">Email:</label>
+            <input id="loginInput" type="email" name="username">
+
+            <label for="registerInput">Password:</label>
+            <input id="registerInput" type="password" name="password">
+
+            <input class="login-button m-top" type="submit" value="Login">
+            <a class="m-top" href="/register/">Register</a>
+        </div>
+    </form>
+{% endblock %}

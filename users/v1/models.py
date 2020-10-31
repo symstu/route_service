@@ -1,6 +1,4 @@
 import uuid
-import typing
-
 from hashlib import md5
 
 import sqlalchemy as sa
@@ -26,7 +24,7 @@ class User(Base):
     created_at = sa.Column(sa.DateTime, server_default='now()')
 
     __table_args__ = (
-        sa.Index('idx_users_username_password', ['username', 'password']),
+        sa.Index('idx_users_username_password', 'username', 'password'),
     )
 
     @staticmethod
@@ -66,16 +64,18 @@ class User(Base):
         return await request.fetchval(username, cls.gen_password(password))
 
     @classmethod
-    async def login(cls, username: str, password: str) -> typing.Tuple[dict, str]:
+    async def login(cls, username: str, password: str):
         user_id = await cls.authorize(username, password)
 
         if not user_id:
             raise exc.UserNotFound
 
-        return {'id': user_id, 'username': username}, await Session.create(user_id)
+        return {'id': user_id,
+                'username': username,
+                'token': await Session.create(user_id)}
 
     @classmethod
-    async def register(cls, username: str, password: str) -> typing.Tuple[dict, str]:
+    async def register(cls, username: str, password: str):
         conn = await conf.db_conn()
         request = await conn.prepare('''
             INSERT INTO users (username, password) VALUES 
@@ -83,8 +83,11 @@ class User(Base):
         ''')
 
         try:
-            user_id = await request.fetchval(username, cls.gen_password(password))
-            return {'id': user_id, 'username': username}, await Session.create(user_id)
+            user_id = await request.fetchval(
+                username, cls.gen_password(password))
+            return {'id': user_id,
+                    'username': username,
+                    'token': await Session.create(user_id)}
 
         except exceptions.UniqueViolationError:
             raise exc.UserAlreadyExists

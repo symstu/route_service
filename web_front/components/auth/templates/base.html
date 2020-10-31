@@ -1,0 +1,59 @@
+{% extends 'templates/base.html' %}
+
+{% block styles %}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Tahoma;
+        background-color: #fff4df;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        justify-items: flex-start;
+        align-items: flex-start;
+    }
+    label {
+        width: 400px;
+    }
+
+    .login-block {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .title {
+        display: flex;
+        justify-self: flex-start;
+        font-size: 50px;
+        font-weight: bold;
+
+    }
+    .inputs {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 200px 200px;
+        grid-template-rows: 20px 20px 40px;
+    }
+    .login-button {
+        width: 100%;
+    }
+    .error {
+        color: red;
+    }
+</style>
+{% block overrided_styles %}{% endblock %}
+
+{% endblock %}
+
+{% block content %}
+<div class="login-block">
+    <span class="title">ONE ROUTE ONE WEB</span>
+    {% block form %} {% endblock %}
+    <div class="error">{{error}}</div>
+</div>
+{% endblock %}

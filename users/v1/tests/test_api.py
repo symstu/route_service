@@ -23,7 +23,7 @@ def test_user_register(client: TestClient):
     assert response.status_code == 200
 
     data = response.json()
-    token = response.headers['token']
+    token = data['token']
 
     assert data.get('id') is not None
     assert data.get('username') == 'username'
@@ -51,7 +51,7 @@ def test_login(client: TestClient):
     assert response.status_code == 200
 
     data = response.json()
-    token = response.headers['token']
+    token = data['token']
 
     assert data['username'] == 'username'
 
@@ -70,7 +70,7 @@ def test_logout(client: TestClient):
     assert response.status_code == 200
 
     user_id = response.json()['id']
-    token = response.headers['token']
+    token = response.json()['token']
 
     response = client.delete('/v1/logout/', params={'user_id': user_id})
     assert response.status_code == 200
