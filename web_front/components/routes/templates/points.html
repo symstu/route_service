@@ -1,0 +1,21 @@
+{% extends 'components/routes/templates/base.html' %}
+
+{% block table %}
+<div></div>
+<table cellspacing="0">
+    <tr>
+        <th>ID</th>
+        <th>name</th>
+        <th>lat</th>
+        <th>lon</th>
+    </tr>
+    {% for point in points %}
+    <tr>
+        <td>{{ point.id }}</td>
+        <td>{{ point.name }}</td>
+        <td>{{ point.lat }}</td>
+        <td>{{ point.lon }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

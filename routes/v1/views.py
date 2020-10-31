@@ -39,7 +39,14 @@ class RoutesView(HTTPEndpoint):
                 examples:
                     {"id": "0", "username": "john"}
         """
-        return JSONResponse(await models.RouteMeta.list())
+        data = await models.RouteMeta.list()
+        output = []
+
+        for item in data.keys():
+            output.append({'name': item,
+                           'id': data[item]['id'],
+                           'points': data[item]['points']})
+        return JSONResponse(output)
 
     async def post(cls, request: Request):
         """
@@ -57,8 +64,13 @@ class RoutesView(HTTPEndpoint):
 
         created_route = await models.RouteMeta.generate(
             data.start, data.finish)
-        return JSONResponse([{'id': item['id'], 'name': item['name']}
-                             for item in created_route])
+        output = [{'id': item['id'], 'name': item['name']}
+                  for item in created_route]
+
+        if len(output) < 5:
+            return JSONResponse(status_code=409)
+
+        return JSONResponse(output)
 
     async def put(cls, request: Request):
         """

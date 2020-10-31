@@ -39,8 +39,10 @@ class LoginPage(HTTPEndpoint):
                 status_code=404
             )
 
-        return RedirectResponse(
-            url='/', headers={'session': user.pop('token')})
+        response = RedirectResponse(url='/')
+        response.set_cookie('session', user['token'])
+
+        return response
 
 
 class RegisterPage(HTTPEndpoint):
@@ -87,8 +89,10 @@ class RegisterPage(HTTPEndpoint):
                 status_code=409
             )
 
-        return RedirectResponse(
-            url='/', headers={'session': user.pop('token')})
+        response = RedirectResponse(url='/')
+        response.set_cookie('session', user['token'])
+
+        return response
 
 
 class LogoutPage(HTTPEndpoint):
@@ -98,7 +102,7 @@ class LogoutPage(HTTPEndpoint):
         async with UsersClient() as client:
             await client.logout(user['id'])
 
-        return RedirectResponse(url='/login/', headers={})
+        return RedirectResponse(url='/login/', headers={}, status_code=303)
 
 
 routes = [

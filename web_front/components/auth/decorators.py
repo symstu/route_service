@@ -9,7 +9,7 @@ from components.auth.client import UsersClient
 def only_authorized():
     def wrapper(method: typing.Coroutine):
         async def wrapped(view_class, request: Request):
-            user_token = request.headers.get('token')
+            user_token = request.cookies.get('session')
 
             if not user_token:
                 return RedirectResponse('/login/')

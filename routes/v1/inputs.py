@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 @dataclass()
 class GenRouteInput:
-    start: int
-    finish: int
+    start: str
+    finish: str
 
 
 @dataclass()

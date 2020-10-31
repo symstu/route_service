@@ -1,3 +1,4 @@
+import uuid
 import asyncio
 import pytest
 
@@ -15,4 +16,19 @@ def event_loop():
 def client():
 
     client = TestClient(app)
+    yield client
+
+
+@pytest.fixture(scope='session')
+def registered_user(client):
+    new_uuid = str(uuid.uuid4())
+
+    response = client.post('/register/', data={
+        'username': new_uuid,
+        'password': new_uuid,
+        'password_confirmation': new_uuid
+    })
+    assert response.status_code == 307
+    assert response.cookies['session'] is not None
+
     yield client

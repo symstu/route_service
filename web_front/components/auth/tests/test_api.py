@@ -26,7 +26,7 @@ def test_register(client: TestClient, username):
         'password_confirmation': 'password'
     })
     assert response.status_code == 307
-    assert response.headers['session'] is not None
+    assert response.cookies['session'] is not None
 
 
 def test_register_again(client: TestClient, username):
@@ -62,9 +62,9 @@ def test_login(client: TestClient, username):
         'password': 'password'
     })
     assert response.status_code == 307
-    assert response.headers['session'] is not None
+    assert response.cookies['session'] is not None
 
     response = client.post('/logout/',
-                           headers={'session': response.headers['session']})
-    assert response.status_code == 307
-    assert 'session' not in response.headers
+                           cookies={'session': response.cookies['session']})
+    assert response.status_code == 303
+    assert 'session' not in response.cookies

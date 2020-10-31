@@ -30,7 +30,7 @@ class UsersClient(httpx.AsyncClient):
         return response.json()
 
     async def get_by_token(self, token: str):
-        response = await self.post('/v1/auth/', params={'token': token})
+        response = await self.get('/v1/auth/', params={'token': token})
 
         if response.status_code == 404:
             return

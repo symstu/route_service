@@ -1,0 +1,57 @@
+{% extends 'components/routes/templates/base.html' %}
+
+{% block overrided_styles %}
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content {
+        margin-top: 50px;
+    }
+
+    .gen {
+        width: 300px;
+    }
+    .save-form {
+        margin-top: 20px;
+    }
+
+</style>
+{% endblock %}
+
+{% block table %}
+<div></div>
+<div class="content">
+    <form method="post" action="/generator/" class="gen">
+        <div class="form-group">
+            <label for="startInput">Start:</label>
+            <input id="startInput" type="text" placeholder="Point Name"
+                   name="start">
+        </div>
+        <div class="form-group">
+            <label for="finishInput">Finish:</label>
+            <input id="finishInput" type="text" placeholder="Point Name"
+                   name="finish">
+        </div>
+
+        <input class="m-top" type="submit" value="GENERATE">
+    </form>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if name %}
+    <div>POINTS: {{ name }}</div>
+    <form method="POST" action="/generator/save/" class="gen save-form">
+        <div class="form-group">
+            <label for="routeNameInput">Route Name</label>
+            <input id="routeNameInput" name="name" placeholder="New Name">
+        </div>
+        <input name="points" value="{{ ids }}" style="display: none">
+        <input type="submit" value="SAVE">
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

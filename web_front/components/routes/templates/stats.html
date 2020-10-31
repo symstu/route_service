@@ -1,0 +1,19 @@
+{% extends 'components/routes/templates/base.html' %}
+
+{% block table %}
+<div></div>
+<table cellspacing="0">
+    <tr>
+        <th>User</th>
+        <th>Routes</th>
+        <th>Length</th>
+    </tr>
+    {% for route in routes %}
+    <tr>
+        <td>{{ route.id }}</td>
+        <td>{{ route.name }}</td>
+        <td>{{ route.points|join('-') }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

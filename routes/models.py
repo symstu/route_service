@@ -95,21 +95,21 @@ class RouteMeta(Base):
         return await request.fetch(name)
 
     @classmethod
-    async def generate(cls, start: int, finish: int):
+    async def generate(cls, start: str, finish: str):
         conn = await conf.db_conn()
         request = await conn.prepare('''
         SELECT 
             id, name
         FROM points
         WHERE 
-            id = $1
+            name = $1
         UNION ALL
         (SELECT 
             id, name
         FROM points
         WHERE 
-            id <> $1 AND 
-            id <> $2
+            name <> $1 AND 
+            name <> $2
         ORDER BY random()
         LIMIT 3)
         UNION ALL
@@ -117,7 +117,7 @@ class RouteMeta(Base):
             id, name
         FROM points
         WHERE 
-            id = $2
+            name = $2
         ''')
         return await request.fetch(start, finish)
 
