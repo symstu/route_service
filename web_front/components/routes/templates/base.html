@@ -49,15 +49,16 @@
 
 {% block content %}
 <div class="navigation">
-    <a href="/">MAIN</a>
+    <a href="/">STATS</a>
     <a href="/points/">POINTS</a>
     <a href="/routes/">ROUTES</a>
-    <a href="/stats/">STATS</a>
     <a href="/generator/">CREATE</a>
 </div>
 <div class="header">
     <div>{{ user.username }}</div>
-    <a href="/logout/">LOGOUT</a>
+    <form action="/logout/" method="post">
+        <input type="submit" value="LOGOUT">
+    </form>
 </div>
 
     {% block table %} {% endblock %}

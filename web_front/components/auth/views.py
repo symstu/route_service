@@ -39,7 +39,7 @@ class LoginPage(HTTPEndpoint):
                 status_code=404
             )
 
-        response = RedirectResponse(url='/')
+        response = RedirectResponse(url='/', status_code=303)
         response.set_cookie('session', user['token'])
 
         return response
@@ -89,7 +89,7 @@ class RegisterPage(HTTPEndpoint):
                 status_code=409
             )
 
-        response = RedirectResponse(url='/')
+        response = RedirectResponse(url='/', status_code=303)
         response.set_cookie('session', user['token'])
 
         return response

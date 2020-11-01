@@ -1,4 +1,4 @@
-from starlette.responses import RedirectResponse, JSONResponse
+from starlette.responses import RedirectResponse
 from starlette.requests import Request
 from starlette.routing import Route
 from starlette.endpoints import HTTPEndpoint
@@ -91,7 +91,7 @@ class GeneratorSave(HTTPEndpoint):
         try:
             form = SaveRouteInput(**await request.form())
         except Exception:
-            return RedirectResponse('/generator/')
+            return RedirectResponse('/generator/', status_code=303)
 
         points = list(map(int, form.points.split('-')))
 
@@ -107,7 +107,7 @@ class GeneratorSave(HTTPEndpoint):
             await client.create_route(
                 user['id'], new_route['id'], route_length)
 
-        return RedirectResponse('/')
+        return RedirectResponse('/', status_code=303)
 
 
 class RouteStatsPage(HTTPEndpoint):
@@ -144,9 +144,9 @@ class RouteStatsPage(HTTPEndpoint):
 
 
 routes = [
-    Route('/', PointsListPage),
+    Route('/', RouteStatsPage),
+    Route('/points/', PointsListPage),
     Route('/routes/', RoutesListPage),
-    Route('/stats/', RouteStatsPage),
     Route('/generator/', RouteCreatePage),
     Route('/generator/save/', GeneratorSave)
 ]
