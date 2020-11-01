@@ -14,7 +14,7 @@ schemas = SchemaGenerator(
 
 
 class PointsView(HTTPEndpoint):
-    async def get(cls, _):
+    async def get(cls, request: Request):
         """
         responses:
             200:
@@ -22,7 +22,10 @@ class PointsView(HTTPEndpoint):
                 examples:
                     {"id": "0", "username": "john"}
         """
-        data = await models.Points.list()
+        limit = int(request.query_params.get('limit', 15))
+        offset = int(request.query_params.get('offset', 0))
+
+        data = await models.Points.list(offset, limit)
         serialized = [{'id': item['id'],
                        'name': item['name'],
                        'lat': item['lat'],
@@ -31,7 +34,7 @@ class PointsView(HTTPEndpoint):
 
 
 class RoutesView(HTTPEndpoint):
-    async def get(cls, _):
+    async def get(cls, request: Request):
         """
         responses:
             200:
@@ -39,7 +42,10 @@ class RoutesView(HTTPEndpoint):
                 examples:
                     {"id": "0", "username": "john"}
         """
-        data = await models.RouteMeta.list()
+        limit = int(request.query_params.get('limit', 15))
+        offset = int(request.query_params.get('offset', 0))
+
+        data = await models.RouteMeta.list(offset, limit)
         output = []
 
         for item in data.keys():

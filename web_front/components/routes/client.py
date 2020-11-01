@@ -8,12 +8,14 @@ class RoutesClient(httpx.AsyncClient):
     def __init__(self):
         super(RoutesClient, self).__init__(base_url=conf.routes_url)
 
-    async def points(self):
-        response = await self.get(f'/v1/points/')
+    async def points(self, offset: int, limit: int):
+        params = {'limit': limit, 'offset': offset}
+        response = await self.get(f'/v1/points/', params=params)
         return response.json()
 
-    async def routes(self):
-        response = await self.get('/v1/routes/')
+    async def routes(self, limit: int, offset: int):
+        params = {'limit': limit, 'offset': offset}
+        response = await self.get('/v1/routes/', params=params)
         return response.json()
 
     async def gen_route(self, start: int, finish: int):
@@ -52,6 +54,7 @@ class UserRoutesClient(httpx.AsyncClient):
 
         return response.json()
 
-    async def users_stats(self):
-        response = await self.get('/v1/stats/')
+    async def users_stats(self, limit: int, offset: int):
+        params = {'limit': limit, 'offset': offset}
+        response = await self.get('/v1/stats/', params=params)
         return response.json()

@@ -13,16 +13,30 @@ from components.routes.inputs import GenerateRouteInput, SaveRouteInput
 templates = Jinja2Templates('')
 
 
+def pagination_cursor(page=0):
+    if page < 0:
+        page = 0
+
+    return {
+        'current_page': page,
+        'next_page': page + 1,
+        'previous_page': None if page == 0 else page - 1
+    }
+
+
 class PointsListPage(HTTPEndpoint):
 
     @only_authorized()
     async def get(cls, request, user):
+        page = int(request.query_params.get('page', 0))
+
         async with RoutesClient() as client:
-            points = await client.points()
+            points = await client.points(offset=page*15, limit=15)
 
         return templates.TemplateResponse(
             'components/routes/templates/points.html',
-            {'request': request, 'user': user, 'points': points}
+            {'request': request, 'user': user, 'points': points,
+             **pagination_cursor(page)}
         )
 
 
@@ -30,12 +44,15 @@ class RoutesListPage(HTTPEndpoint):
 
     @only_authorized()
     async def get(cls, request, user):
+        page = int(request.query_params.get('page', 0))
+
         async with RoutesClient() as client:
-            created_routes = await client.routes()
+            created_routes = await client.routes(offset=page*15, limit=15)
 
         return templates.TemplateResponse(
             'components/routes/templates/routes.html',
-            {'request': request, 'user': user, 'routes': created_routes}
+            {'request': request, 'user': user, 'routes': created_routes,
+             **pagination_cursor(page)}
         )
 
 
@@ -114,8 +131,10 @@ class RouteStatsPage(HTTPEndpoint):
 
     @only_authorized()
     async def get(cls, request: Request, user):
+        page = int(request.query_params.get('page', 0))
+
         async with UserRoutesClient() as client:
-            stats = await client.users_stats()
+            stats = await client.users_stats(offset=page*15, limit=15)
 
         users = [item['user_id'] for item in stats]
 
@@ -139,7 +158,8 @@ class RouteStatsPage(HTTPEndpoint):
 
         return templates.TemplateResponse(
             'components/routes/templates/stats.html',
-            {'request': request, 'user': user, 'stats': output}
+            {'request': request, 'user': user, 'stats': output,
+             **pagination_cursor(page)}
         )
 
 

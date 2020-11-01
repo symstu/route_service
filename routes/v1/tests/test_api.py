@@ -22,7 +22,12 @@ def test_list_of_routes(client):
     assert len(response.json())
 
 
+created_route_id = None
+
+
 def test_gen_and_save_new(client):
+    global created_route_id
+
     response = client.post('/v1/routes/', json={'start': 'A', 'finish': 'Z'})
     assert response.status_code == 200
 
@@ -36,8 +41,11 @@ def test_gen_and_save_new(client):
     assert response.status_code == 200
     assert response.json()['id'] is not None
 
+    created_route_id = response.json()['id']
+
 
 def test_routes_batch(client: TestClient):
-    response = client.post('/v1/batch/', json={'routes_id': ['id']})
+    response = client.post('/v1/batch/', json={
+        'routes_id': [created_route_id]})
     assert response.status_code == 200
     assert response.json()

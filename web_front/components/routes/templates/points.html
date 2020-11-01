@@ -18,4 +18,18 @@
     </tr>
     {% endfor %}
 </table>
+<div></div>
+<div class="row pagination">
+    <input type="text" disabled value="Page: {{ current_page }}">
+
+    <form method="get" action="/points/">
+        <input type="submit" value="<">
+        <input type="number" name="page" value="{{ previous_page }}" {% if previous_page == None  %}disabled {% endif %}} style="display: none">
+    </form>
+    <form method="get" action="/points/">
+        <input type="submit" value=">">
+        <input type="number" name="page" value="{{ next_page }}" style="display: none">
+    </form>
+</div>
+
 {% endblock %}

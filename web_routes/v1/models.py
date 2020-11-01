@@ -31,15 +31,17 @@ class UserStats(Base):
         return await request.fetch(user_id, route_length)
 
     @classmethod
-    async def stats(cls):
+    async def stats(cls, offset: int, limit: int):
         conn = await conf.db_conn()
         request = await conn.prepare('''
         SELECT 
             * 
         FROM user_stats
         ORDER BY id
+        OFFSET $1
+        LIMIT $2
         ''')
-        return await request.fetch()
+        return await request.fetch(offset, limit)
 
 
 class UserRoutes(Base):

@@ -24,14 +24,16 @@ class Points(Base):
     )
 
     @classmethod
-    async def list(cls) -> typing.List[PointOut]:
+    async def list(cls, offset: int, limit: int) -> typing.List[PointOut]:
         conn = await conf.db_conn()
         request = await conn.prepare('''
         SELECT 
             *
         FROM points
+        OFFSET $1
+        LIMIT $2
         ''')
-        return await request.fetch()
+        return await request.fetch(offset, limit)
 
 
 class RouteMeta(Base):
@@ -46,7 +48,7 @@ class RouteMeta(Base):
     )
 
     @classmethod
-    async def list(cls):
+    async def list(cls, offset: int, limit: int):
         """
         Get list of created points
 
@@ -56,23 +58,22 @@ class RouteMeta(Base):
         request = await conn.prepare('''
         SELECT 
             rm.id as route_id, 
-            rm.name as route_name,
-            p.name as point_name
+            min(rm.name) as route_name,
+            array_agg(p.name) as points 
         FROM routes_meta rm
         JOIN routes r ON r.meta = rm.id
         JOIN points p ON r.point = p.id
-        ORDER BY r.id
+        GROUP BY route_id
+        OFFSET $1 
+        LIMIT $2
         ''')
-        data = await request.fetch()
+        data = await request.fetch(offset, limit)
         routes = dict()
 
         for point in data:
             route_name = point['route_name']
-
-            if route_name not in routes:
-                routes[route_name] = {'id': point['route_id'], 'points': []}
-
-            routes[route_name]['points'].append(point['point_name'])
+            routes[route_name] = {'id': point['route_id'],
+                                  'points': point['points']}
 
         return routes
 

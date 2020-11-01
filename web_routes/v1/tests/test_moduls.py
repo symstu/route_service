@@ -33,7 +33,7 @@ async def test_users_stats():
         if stats_id not in ids:
             ids.append(stats_id)
 
-    users_stats = await models.UserStats.stats()
+    users_stats = await models.UserStats.stats(0, 15)
 
     def get_stat_by_id(stat_id):
         for index, i in enumerate(users_stats):

@@ -26,8 +26,11 @@ class RouteCreateView(HTTPEndpoint):
 
 
 class UsersStatsView(HTTPEndpoint):
-    async def get(cls, _):
-        data = await models.UserStats.stats()
+    async def get(cls, request: Request):
+        limit = int(request.query_params.get('limit', 15))
+        offset = int(request.query_params.get('offset', 0))
+
+        data = await models.UserStats.stats(offset, limit)
         return JSONResponse([{
             'id': i['id'], 'user_id': i['user_id'],
             'total': i['routes_amount'],
