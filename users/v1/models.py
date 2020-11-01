@@ -1,4 +1,6 @@
 import uuid
+import typing
+
 from hashlib import md5
 
 import sqlalchemy as sa
@@ -97,10 +99,15 @@ class User(Base):
         return await Session.remove(user_id)
 
     @classmethod
-    async def remove(cls, user_id: int):
+    async def get_batch(cls, users_id: typing.List[int]):
         conn = await conf.db_conn()
-        request = await conn.prepare('select delete_user($1)')
-        return request.fetchval(user_id)
+        request = await conn.prepare('''
+        SELECT 
+            id, username
+        FROM users 
+        WHERE id = ANY($1::INT[])
+        ''')
+        return await request.fetch(users_id)
 
 
 class Session(Base):

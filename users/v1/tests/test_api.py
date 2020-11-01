@@ -78,3 +78,9 @@ def test_logout(client: TestClient):
     response = client.get('/v1/auth/', params={'token': token})
     assert response.status_code == 404
 
+
+def test_users_batch(client: TestClient):
+    response = client.post('/v1/batch/', json={
+        'users_id': [0],
+    })
+    assert response.status_code == 200

@@ -93,6 +93,31 @@ class RoutesView(HTTPEndpoint):
         return JSONResponse({'id': data[0]['meta']})
 
 
+class RoutesBatch(HTTPEndpoint):
+    async def get(self, request: Request):
+        routes_ids = (await request.json())['routes_id']
+        fetched_data = await models.RouteMeta.get_batch(routes_ids)
+        output_routes = {}
+
+        for route in fetched_data:
+            route_id = route['meta_id']
+
+            if route_id not in routes:
+                output_routes[route_id] = {
+                    'name': route['meta_name'],
+                    'points': []
+                }
+
+            output_routes[route_id]['points'].append({
+                'id': route['point_id'],
+                'name': route['point_name'],
+                'lat': route['lat'],
+                'lon': route['lon']
+            })
+
+        return JSONResponse(output_routes)
+
+
 def open_api_schema(request: Request):
     return schemas.OpenAPIResponse(request=request)
 
@@ -100,6 +125,7 @@ def open_api_schema(request: Request):
 routes = [
     Route('/v1/points/', PointsView),
     Route('/v1/routes/', RoutesView),
+    Route('/v1/routes/batch/', RoutesBatch),
 
     Route('/schema', endpoint=open_api_schema, include_in_schema=False)
 ]

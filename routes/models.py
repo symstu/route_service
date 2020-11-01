@@ -95,6 +95,25 @@ class RouteMeta(Base):
         return await request.fetch(name)
 
     @classmethod
+    async def get_batch(cls, routes_ids: typing.List[int]):
+        conn = await conf.db_conn()
+        request = await conn.prepare('''
+        SELECT 
+            rm.id as meta_id, 
+            rm.name as meta_name,
+            p.name as point_name, 
+            p.id as point_id, 
+            p.lat as lat,
+            p.lon as lon
+        FROM routes_meta rm
+        JOIN routes r ON r.meta = rm.id
+        JOIN points p ON r.point = p.id
+        WHERE rm.id = ANY($1::int[])
+        ORDER BY r.id
+        ''')
+        return await request.fetch(routes_ids)
+
+    @classmethod
     async def generate(cls, start: str, finish: str):
         conn = await conf.db_conn()
         request = await conn.prepare('''

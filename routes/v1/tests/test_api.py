@@ -23,7 +23,7 @@ def test_list_of_routes(client):
 
 
 def test_gen_and_save_new(client):
-    response = client.post('/v1/routes/', json={'start': 1, 'finish': 2})
+    response = client.post('/v1/routes/', json={'start': 'A', 'finish': 'Z'})
     assert response.status_code == 200
 
     points_id = [point['id'] for point in response.json()]
@@ -35,3 +35,9 @@ def test_gen_and_save_new(client):
     })
     assert response.status_code == 200
     assert response.json()['id'] is not None
+
+
+def test_routes_batch(client: TestClient):
+    response = client.post('/v1/routes/batch/', json={'routes_id': ['id']})
+    assert response.status_code == 200
+    assert response.json()

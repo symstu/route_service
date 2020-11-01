@@ -20,7 +20,7 @@ async def test_gen_and_save_new():
     data = await Points.list()
     point_a, point_b = data[:2]
 
-    data = await RouteMeta.generate(point_a['id'], point_b['id'])
+    data = await RouteMeta.generate(point_a['name'], point_b['name'])
     assert len(data) == 5
 
     data = await RouteMeta.create('new_route', [item['id'] for item in data])
@@ -29,3 +29,9 @@ async def test_gen_and_save_new():
     data = await RouteMeta.list()
     assert 'new_route' in data
     assert len(data['new_route']['points']) == 5
+
+
+@pytest.mark.asyncio
+async def test_get_batch():
+    data = await RouteMeta.get_batch([0])
+    assert len(data)

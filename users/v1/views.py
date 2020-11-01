@@ -12,6 +12,15 @@ schemas = SchemaGenerator(
 )
 
 
+class GetUsersByIds(HTTPEndpoint):
+    async def post(self, request: Request):
+        users_id = (await request.json())['users_id']
+        users = await models.User.get_batch(users_id)
+
+        data = [{'id': i['id'], 'username': i['username']} for i in users]
+        return JSONResponse(data)
+
+
 class AuthenticateView(HTTPEndpoint):
     async def get(self, request: Request):
         """
@@ -106,6 +115,7 @@ routes = [
     Route('/v1/login/', LoginView),
     Route('/v1/auth/', AuthenticateView),
     Route('/v1/logout/', LogoutView),
+    Route('/v1/batch/', GetUsersByIds),
 
     Route('/schema', endpoint=open_api_schema, include_in_schema=False)
 ]
