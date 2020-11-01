@@ -17,7 +17,7 @@ class GetUsersByIds(HTTPEndpoint):
         users_id = (await request.json())['users_id']
         users = await models.User.get_batch(users_id)
 
-        data = [{'id': i['id'], 'username': i['username']} for i in users]
+        data = {i['id']: {'username': i['username']} for i in users}
         return JSONResponse(data)
 
 

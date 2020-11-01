@@ -94,7 +94,7 @@ class RoutesView(HTTPEndpoint):
 
 
 class RoutesBatch(HTTPEndpoint):
-    async def get(self, request: Request):
+    async def post(self, request: Request):
         routes_ids = (await request.json())['routes_id']
         fetched_data = await models.RouteMeta.get_batch(routes_ids)
         output_routes = {}
@@ -125,7 +125,7 @@ def open_api_schema(request: Request):
 routes = [
     Route('/v1/points/', PointsView),
     Route('/v1/routes/', RoutesView),
-    Route('/v1/routes/batch/', RoutesBatch),
+    Route('/v1/batch/', RoutesBatch),
 
     Route('/schema', endpoint=open_api_schema, include_in_schema=False)
 ]

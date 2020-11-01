@@ -1,4 +1,5 @@
 import httpx
+import typing
 
 from config import conf
 
@@ -45,4 +46,8 @@ class UsersClient(httpx.AsyncClient):
         if response.status_code == 404:
             return
 
+        return response.json()
+
+    async def batch_users(self, users_id: typing.List[int]):
+        response = await self.post('/v1/batch/', json={'users_id': users_id})
         return response.json()

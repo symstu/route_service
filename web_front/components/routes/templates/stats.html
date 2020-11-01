@@ -4,15 +4,17 @@
 <div></div>
 <table cellspacing="0">
     <tr>
-        <th>User</th>
-        <th>Routes</th>
-        <th>Length</th>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Total Routes</th>
+        <th>Summarized Length</th>
     </tr>
-    {% for route in routes %}
+    {% for stat in stats %}
     <tr>
-        <td>{{ route.id }}</td>
-        <td>{{ route.name }}</td>
-        <td>{{ route.points|join('-') }}</td>
+        <td>{{ stat.id }}</td>
+        <td>{{ stat.user }}</td>
+        <td>{{ stat.total }}</td>
+        <td>{{ stat.length }}</td>
     </tr>
     {% endfor %}
 </table>

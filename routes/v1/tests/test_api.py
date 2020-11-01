@@ -38,6 +38,6 @@ def test_gen_and_save_new(client):
 
 
 def test_routes_batch(client: TestClient):
-    response = client.post('/v1/routes/batch/', json={'routes_id': ['id']})
+    response = client.post('/v1/batch/', json={'routes_id': ['id']})
     assert response.status_code == 200
     assert response.json()
